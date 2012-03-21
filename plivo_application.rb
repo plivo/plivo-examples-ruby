@@ -32,7 +32,7 @@ response = p.delete_application(params)
 
 
 # Create subaccount application
-$params = {
+params = {
     'subauth_id' => ' XXXXXXXXXXXX',
     'app_name' => 'Gimli the dwarf',
     'answer_url' => 'http://example.com/answer_url',
