@@ -7,7 +7,7 @@ AUTH_TOKEN = ""
 p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
 
 
-# Making a call
+# Send SMS
 params = {'src' => '1212XXXXXXX', 
            'dst' => '1212XXXXXXX', 
            'text' => 'Hi, message from Plivo',
