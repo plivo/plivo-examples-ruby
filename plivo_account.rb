@@ -1,4 +1,5 @@
 require 'plivo'
+include Plivo
 
 
 AUTH_ID = ""

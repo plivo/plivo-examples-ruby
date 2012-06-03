@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'plivo'
+include Plivo
 
 base_url = ''
 AUTH_ID = ""

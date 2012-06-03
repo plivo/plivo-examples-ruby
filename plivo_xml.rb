@@ -1,4 +1,5 @@
 require 'plivo'
+include Plivo
 
 # Dial XML
 dial_callerId = '1XXXXXXXX'
