@@ -7,7 +7,7 @@ dial_number = '120XXXXX'
 r = Response.new()
 d = r.addDial({'callerId' => dial_callerId})
 d.addNumber(dial_number)
-r.to_xml()
+puts r.to_xml()
 
 #Output:
 #<Response>
@@ -22,7 +22,7 @@ r.to_xml()
 r = Response.new()
 r.addWait({'length' => 2 })
 r.addSpeak('Hi')
-r.to_xml()
+puts r.to_xml()
 
 #Output:
 #<Response>
@@ -37,7 +37,7 @@ play_loop = '2'
 
 r = Response.new()
 r.addPlay(play_url, {'loop' => play_loop})
-r.to_xml()
+puts r.to_xml()
 
 #Output:
 #<Response>
