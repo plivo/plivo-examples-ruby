@@ -6,10 +6,7 @@ include Plivo
 
 get '/dial' do
   to_number = params[:To]
-  from_number = params[:CLID]
-  if not from_number
-    from_number = params[:From] ? params[:From] : ''
-  end
+  from_number = params[:CLID] ? params[:CLID] : params[:From] ? params[:From] : ''
   caller_name = params[:CallerName] ? params[:CallerName] : ''
 
   resp = Response.new()
