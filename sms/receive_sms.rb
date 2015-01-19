@@ -5,10 +5,10 @@ include Plivo
 post '/message/' do
 
 	# The phone number of the person who sent the SMS
-	from_number = params[:To]
+	from_number = params[:From]
 
 	# Your Plivo number that will receive the SMS
-	to_number = params[:From]
+	to_number = params[:To]
 
 	# The text which was received on your Plivo number
 	text = params[:Text]
