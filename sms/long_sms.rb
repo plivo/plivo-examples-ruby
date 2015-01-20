@@ -33,3 +33,21 @@ print response
 #	}
 # ]
 
+uuid = response[1]['message_uuid'][0]
+
+params1 = {
+    'record_id' => uuid
+}
+
+response = p.get_message(params1)
+
+print "You SMS was split into #{response[1]['units']} units"
+
+# Output for Japanese
+# Your SMS was split into 3 units
+
+# Output for English
+# Your SMS was split into 2 units
+
+# Output for French
+# Your SMS was split into 5 units
