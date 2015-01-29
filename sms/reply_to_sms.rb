@@ -27,8 +27,13 @@ post '/message/' do
     'callbackMethod' => 'POST' # The method used to notify the callbackUrl
     }
 	
+    # Message added
 	r.addMessage(body,params)
+
+    # Print the XML
 	puts r.to_xml()
+
+    # Return the XML
 	content_type 'text/xml'
 	return r.to_s()
 end

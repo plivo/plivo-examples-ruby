@@ -10,10 +10,22 @@ AUTH_TOKEN = "Your AUTH_TOKEN"
 p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
 
 params = {
-    'record_id' => '0936ec98-7c4c-11e4-9bd8-22000afa12b9'
+    'record_id' => '0936ec98-7c4c-11e4-9bd8-22000afa12b9' # Message UUID for which the details have to be retrieved
 }
 
 response = p.get_message(params)
+
+# Prints the number of SMS units
+print "Your SMS was split into %s units" % response[1]['units']
+
+# Sample successful output
+# Your SMS was split into 4 units
+
+# Prints the status of the message
+print response[1]['message_state']
+
+# Sample successful output
+# delivered
 
 # Prints the details of all messages
 print response

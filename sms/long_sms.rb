@@ -9,6 +9,9 @@ AUTH_TOKEN = "Your AUTH_TOKEN"
 
 p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
 
+# SMS containing more than 160 standard characters, is automatically split as a long SMS.  
+# SMS containing more than 70 Unicode characters, is automatically split as a long SMS.
+# Information about split SMSes are sent to the url and are also reported in the Message Logs in the Account Dashboard. 
 
 # Send SMS
 params = {

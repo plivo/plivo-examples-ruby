@@ -43,3 +43,6 @@ def to_email(text)
         body text
     end
 end
+
+# Sample successful output
+# Text received: Hello, from Plivo - From: 2222222222

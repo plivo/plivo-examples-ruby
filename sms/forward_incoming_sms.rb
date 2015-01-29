@@ -20,7 +20,9 @@ post '/message/' do
 	r = Response.new()
 
 	body = "Forwarded message : #{text}"
+    The phone number to which the SMS has to be forwarded
 	to_forward = '3333333333'
+
     params = {
     'src' => to_number, # Sender's phone number
     'dst' => to_forward, # Receiver's phone Number
@@ -28,8 +30,13 @@ post '/message/' do
     'callbackMethod' => 'POST' # The method used to notify the callbackUrl
     }
 	
+    # Message added
 	r.addMessage(body,params)
+
+    # Print the XML
 	puts r.to_xml()
+
+    # Return the XML
 	content_type 'text/xml'
 	return r.to_s()
 end

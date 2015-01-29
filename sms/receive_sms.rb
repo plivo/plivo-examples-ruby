@@ -19,3 +19,6 @@ post '/message/' do
 
 	"Message received"
 end
+
+# Sample successful output
+# Text received: Hello, from Plivo - From: 2222222222
