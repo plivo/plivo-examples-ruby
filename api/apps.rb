@@ -34,7 +34,7 @@ params = {
         'offset' => '0' # The number of value items by which the results should be offset
 }
 
-response = p.get_applications()
+response = p.get_applications(params)
 #print response
 
 =begin
@@ -44,7 +44,7 @@ Sample Output
         "api_id"=>"0f337ed8-af76-11e4-b423-22000ac8a2f8", 
         "meta"=>{
             "limit"=>2, 
-            "next"=>"/v1/Account/MAYMFHYZJKMJG0NJG4OG/Application/?limit=2&offset=2", 
+            "next"=>"/v1/Account/XXXXXXXXXXXX/Application/?limit=2&offset=2", 
             "offset"=>0, 
             "previous"=>nil, 
             "total_count"=>9
@@ -64,7 +64,7 @@ Sample Output
                 "message_method"=>"POST", 
                 "message_url"=>"", 
                 "public_uri"=>false, 
-                "resource_uri"=>"/v1/Account/MAYMFHYZJKMJG0NJG4OG/Application/31417932002017379/", 
+                "resource_uri"=>"/v1/Account/XXXXXXXXXXXX/Application/31417932002017379/", 
                 "sip_uri"=>"sip:31417932002017379@app.plivo.com", 
                 "sub_account"=>nil
             }, {
@@ -82,7 +82,7 @@ Sample Output
                 "message_method"=>"POST", 
                 "message_url"=>"http://plivodirectdial.herokuapp.com/response/sip/route/?DialMusic=real&CLID=919663489533", 
                 "public_uri"=>false, 
-                "resource_uri"=>"/v1/Account/MAYMFHYZJKMJG0NJG4OG/Application/16982793927977910/", 
+                "resource_uri"=>"/v1/Account/XXXXXXXXXXXX/Application/16982793927977910/", 
                 "sip_uri"=>"sip:16982793927977910@app.plivo.com", 
                 "sub_account"=>nil
             }
@@ -136,7 +136,7 @@ Sample Output
         "message_method"=>"POST", 
         "message_url"=>"", 
         "public_uri"=>false, 
-        "resource_uri"=>"/v1/Account/MAYMFHYZJKMJG0NJG4OG/Application/31417932002017379/", 
+        "resource_uri"=>"/v1/Account/XXXXXXXXXXXX/Application/31417932002017379/", 
         "sip_uri"=>"sip:31417932002017379@app.plivo.com", 
         "sub_account"=>nil
     }
