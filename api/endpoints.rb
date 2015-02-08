@@ -2,7 +2,7 @@ require 'rubygems'
 require 'plivo'
 include Plivo
 
-AUTH_ID = "Your AUHT_ID"
+AUTH_ID = "Your AUTH_ID"
 AUTH_TOKEN = "Your AUTH_TOKEN"
 
 
