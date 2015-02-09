@@ -33,13 +33,13 @@ end
 Sample output for Redirect XML
 <Response>
     <Speak>Please wait while you call is being transferred</Speak>
-    <Redirect>https://morning-ocean-4669.herokuapp.com/connect/</Redirect>
+    <Redirect>https://enigmatic-cove-3140.herokuapp.com/connect/</Redirect>
 </Response>
 
 Sample output for Dial XML
 <Response>
     <Speak>Connecting your call..</Speak>
-    <Dial action="https://morning-ocean-4669.herokuapp.com/dial_status/" method="GET" redirect="true">
+    <Dial action="https://enigmatic-cove-3140.herokuapp.com/dial_status/" method="GET" redirect="true">
         <Number>1111111111</Number>
     </Dial>
 </Response>
