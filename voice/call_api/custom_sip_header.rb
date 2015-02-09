@@ -10,7 +10,7 @@ AUTH_TOKEN = "Your AUTH_TOKEN"
 p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
 
 params = {
-    'to' => '2222222222', # The phone numer to which the call has to be placed
+    'to' => '2222222222', # The phone number to which the call has to be placed
     'from' => '1111111111', # The phone number to be used as the caller id
     'answer_url' => 'https://enigmatic-cove-3140.herokuapp.com/speak', # The URL invoked by Plivo when the outbound call is answered
     'answer_method' => 'GET', # The method used to call the answer_url
