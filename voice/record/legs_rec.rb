@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'sinatra'
 require 'plivo'
 include Plivo
 
@@ -91,13 +92,15 @@ end
     </Dial>
 </Response>
 
+Reord API
 [201, 
     {
         "api_id"=>"e3403906-9585-11e4-b153-22000abcaa64", 
         "message"=>"async api spawned", 
     }
 ]
-Async
+
+Play API
 [200, 
     {
         "api_id"=>"e3791dca-9585-11e4-96e3-22000abcb9af", 
