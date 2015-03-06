@@ -38,8 +38,8 @@ get '/transfer_action' do
     print "Digit pressed #{digit}"
     print "Call UUID #{call_uuid}"
 
-    AUTH_ID = "MAYMFHYZJKMJG0NJG4OG"
-    AUTH_TOKEN = "ZDZlNzI1ZDVkNDkzYWIxMzk5NjU1ODkzZWYyZmEx"
+    AUTH_ID = "Your AUTH_ID"
+    AUTH_TOKEN = "Your AUTH_TOKEN"
 
     p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
 

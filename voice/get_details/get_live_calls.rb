@@ -3,8 +3,8 @@ require 'rubygems'
 require 'plivo'
 include Plivo
 
-AUTH_ID = "MAYMFHYZJKMJG0NJG4OG"
-AUTH_TOKEN = "ZDZlNzI1ZDVkNDkzYWIxMzk5NjU1ODkzZWYyZmEx"
+AUTH_ID = "Your AUTH_ID"
+AUTH_TOKEN = "Your AUTH_TOKEN"
 
 p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
 
