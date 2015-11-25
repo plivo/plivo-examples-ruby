@@ -94,6 +94,20 @@ Sample Output
 ]
 '''
 
+# Modify a number
+params = {
+    'number' => '12109206499', # Number that has to be modified
+    'alias' => 'testing123' # The textual name given to the number
+}
+
+response = p.modify_number(params)
+print response
+
+'''
+Sample Output
+[202, {"api_id"=>"bb3a1c2a-9358-11e5-b5a0-22000aec8060", "message"=>"changed"}]
+'''
+
 # Unrent a number
 params = {
         'number' => '12109206499' # Number that has to be unrented
