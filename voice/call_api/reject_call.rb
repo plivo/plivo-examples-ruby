@@ -1,34 +1,36 @@
-# encoding: utf-8
+require 'rubygems'
+require 'plivo'
 require 'rubygems'
 require 'sinatra'
-require 'plivo'
-include Plivo
 
-# Set te caller ID using Dial XML
+include Plivo::XML
+include Plivo::Exceptions
 
 get '/hangup' do
-
-    r = Response.new()
-    params = {
-        'reason' => 'busy', # Specify the reason for hangup
-        'schedule' => '60' # Schedule the hangup
-    }
-    
-    body = "This call will be hung up in 1 minute"
-
-    r.addSpeak(body)
-    r.addHangup(params)
-    
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
+	content_type 'text/xml'
+	begin
+		response = Response.new
+				params = {
+			schedule: '60',
+			reason: 'rejected'
+		}
+		response.addHangup(params)
+				speak_params = {
+			loop: '0'
+		}
+		speak_body = 'This call will be hung up after a minute'
+		response.addSpeak(speak_body, speak_params)
+				xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
 
 =begin
 Sample Output
 <Response>
-    <Dial callerId="1111111111">
-        <Number>2222222222</Number>
-    </Dial>
-</Response>    
+    <Hangup schedule="60" reason="rejected" />
+    <Speak loop="0">This call will be hung up after a minute</Speak>
+</Response>  
 =end

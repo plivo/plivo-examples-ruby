@@ -5,26 +5,29 @@ include Plivo
 
 get '/call_hunting' do
 
-    r = Response.new()
-    r.addSpeak("Dialing")
-    d = r.addDial()
-    d.addNumber("2222222222")
-    d.addNumber("3333333333")
-    d.addUser("sip:abcd1234@phone.plivo.com")
-
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
+	begin
+		response = Response.new
+				dial = response.addDial()
+		first_user = "sip:alice1234@phone.plivo.com"
+		dial.addUser(first_user)
+				number = "1111111111"
+		dial.addNumber(number)
+				second_user = "sip:john1234@phone.plivo.com"
+		dial.addUser(second_user)
+				xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
 
 =begin
 Sample Output
 <Response>
-    <Speak>Dialing</Speak>
     <Dial>
-        <Number>2222222222</Number>
-        <Number>3333333333</Number>
-        <User>sip:abcd1234@phone.plivo.com</User>
+      <User>sip:alice1234@phone.plivo.com</User>
+      <Number>15671234567</Number>
+      <User>sip:john1234@phone.plivo.com</User>
     </Dial>
-</Response>  
+</Response>
 =end

@@ -5,16 +5,18 @@ include Plivo
 
 get '/connect' do
     # Generate a Dial XML with the details of the number to call 
-    
-    r = Response.new()
-    r.addSpeak("Connecting your call..")
-    d = r.addDial(params)
-    d.addNumber("1111111111")
-
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
-end
+    begin
+        response = Response.new
+        speak_body = 'Connecting your call..'
+        response.addSpeak(speak_body, params)
+        dial = response.addDial()
+        first_number = "1111111111"
+        dial.addNumber(first_number)
+        xml = PlivoXML.new(response)
+        return xml.to_xml
+      rescue PlivoXMLError => e
+        puts 'Exception: ' + e.message
+    end
 
 =begin
 Sample output
@@ -25,4 +27,3 @@ Sample output
     </Dial>
 </Response>    
 =end
-    

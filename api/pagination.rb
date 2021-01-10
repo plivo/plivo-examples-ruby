@@ -1,23 +1,24 @@
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
-
-
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
 # This example shows how to traverse the list of all applications. 
 
 # Get details all existing applications
-params = {
-        'limit' => '2', # The number of results per page
-        'offset' => '0' # The number of value items by which the results should be offset
-}
-
-response = p.get_applications(params)
-print response[1]
+begin
+	response = api.applications.list(
+		limit: 5, # The number of results per page
+		offset: 0 # The number of value items by which the results should be offset
+	)
+	#print response
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
 =begin
 Sample Output 
@@ -73,7 +74,7 @@ Sample Output
 =end
 
 # Print the link to view the next page of results
-print response[1]['meta']['next']
+print response['meta']['next']
 
 =begin
     

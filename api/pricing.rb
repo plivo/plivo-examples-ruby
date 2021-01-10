@@ -1,25 +1,24 @@
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
-
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-params = {
-    'country_iso' => "GB" # The 2 digit country ISO code.
-}
-
-response = p.pricing(params)
-print response
+begin
+	response = api.pricings.get(
+		'GB' # The 2 digit country ISO code.
+	)
+	#print response
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
 =begin
 Sample Ouput    
-
-[200, 
-    {
+{
         "api_id"=>"0009839e-af9e-11e4-b423-22000ac8a2f8", 
         "country"=>"United Kingdom", 
         "country_code"=>44, 
@@ -141,8 +140,6 @@ Sample Ouput
             }
         }
     }
-]
-    
 =end
 
 

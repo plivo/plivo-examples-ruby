@@ -1,27 +1,26 @@
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
+begin
+	response = api.phone_numbers.search(
+		'GB', # The ISO code A2 of the country
+		type: 'local', # The type of number you are looking for. The possible number types are local, national and tollfree.
+		pattern:'210', # Represents the pattern of the number to be searched. 
+		region:'Texas' # This filter is only applicable when the number_type is local. Region based filtering can be performed.
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-# Search for new number
-params = {
-    'country_iso' => 'US', # The ISO code A2 of the country
-    'type' => 'local', # The type of number you are looking for. The possible number types are local, national and tollfree.
-    'pattern' => '210', # Represents the pattern of the number to be searched. 
-    'region' => 'Texas' # This filter is only applicable when the number_type is local. Region based filtering can be performed.
-}
-
-response = p.search_phone_number(params)
-print response
-
-'''
+=begin
 Sample Output
-[200, {
+{
         "api_id"=>"978c324e-b682-11e4-b423-22000ac8a2f8", 
         "meta"=>{
             "limit"=>20, 
@@ -67,20 +66,21 @@ Sample Output
             }
         ]
     }
-]
-'''
+=end
 
 # Buy a phone number
-params = {
-    'number' => '12109206499' # The phone number
-}
+begin
+	response = api.phonenumbers.buy(
+		'10123456789' # The phone number
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-response = p.buy_phone_number(params)
-print response
-
-'''
+=begin
 Sample Output
-[201, {
+{
         "api_id"=>"17d5d27a-b683-11e4-ac1f-22000ac51de6", 
         "message"=>"created", 
         "numbers"=>[
@@ -92,32 +92,38 @@ Sample Output
         "status"=>"fulfilled"
     }
 ]
-'''
+=end
 
 # Modify a number
-params = {
-    'number' => '12109206499', # Number that has to be modified
-    'alias' => 'testing123' # The textual name given to the number
-}
+begin
+	response = api.numbers.update(
+		'17609915566', # Number that has to be modified
+		alias: 'Updated Alias' # The textual name given to the number
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-response = p.modify_number(params)
-print response
-
-'''
+=begin
 Sample Output
-[202, {"api_id"=>"bb3a1c2a-9358-11e5-b5a0-22000aec8060", "message"=>"changed"}]
-'''
+{
+    "api_id"=>"bb3a1c2a-9358-11e5-b5a0-22000aec8060", 
+    "message"=>"changed"
+}
+=end
 
 # Unrent a number
-params = {
-        'number' => '12109206499' # Number that has to be unrented
-}
+begin
+	response = api.numbers.delete(
+		'17609915566'  # Number that has to be unrented
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-response = p.unrent_number(params)
-print response
-
-'''
+=begin
 Sample Output
-[204, ""]
-
-'''
+[""]
+=end

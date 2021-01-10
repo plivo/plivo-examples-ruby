@@ -1,25 +1,24 @@
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
+begin
+	response = api.numbers.list(
+		limit: 5, # Used to display the number of results per page.
+		offset: 0 # Denotes the number of value items by which the results should be offset. 
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-# Get all numbers
-params = {
-    'limit' => '10', # Used to display the number of results per page.
-    'offset' => '0' # Denotes the number of value items by which the results should be offset. 
-}
-
-response = p.get_numbers(params)
-#print response
-
-'''
+=begin
 Sample Output
-[200, {
+{
         "api_id"=>"a1547c4c-b677-11e4-9107-22000afaaa90", 
         "meta"=>{
             "limit"=>10, 
@@ -64,22 +63,22 @@ Sample Output
                 "voice_rate"=>"0.00500"
             }
         ]
-    }
-]
-
-'''
+}
+=end
 
 # Get a particular number
-params = {
-    'number' => '2222222222' # Phone number for which the details have to be retrieved
-}
+begin
+	response = api.numbers.get(
+		'17609915566' # Phone number for which the details have to be retrieved
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-response = p.get_number(params)
-print response
-
-'''
+=begin
 Sample Output
-[200, {
+{
         "active"=>true, 
         "added_on"=>"2014-12-04", 
         "alias"=>"", 
@@ -87,10 +86,10 @@ Sample Output
         "application"=>"/v1/Account/XXXXXXXXXXXX/Application/21935628481970026/", 
         "carrier"=>"Plivo", 
         "monthly_rental_rate"=>"0.80000", 
-        "number"=>"2222222222", 
+        "number"=>"17609915566", 
         "number_type"=>"local", 
         "region"=>"UNITED KINGDOM", 
-        "resource_uri"=>"/v1/Account/XXXXXXXXXXXX/Number/2222222222/", 
+        "resource_uri"=>"/v1/Account/XXXXXXXXXXXX/Number/17609915566/", 
         "sms_enabled"=>true, 
         "sms_rate"=>"0.00000", 
         "sub_account"=>nil, 
@@ -98,9 +97,4 @@ Sample Output
         "voice_enabled"=>true, 
         "voice_rate"=>"0.00500"
     }
-]
-
-'''
-
-
-
+=end

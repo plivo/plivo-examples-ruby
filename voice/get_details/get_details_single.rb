@@ -1,23 +1,23 @@
-# encoding: utf-8
-require 'rubygems'
+equire 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-params = {
-    'record_id' => '93c513fe-b03a-11e4-990a-251344c8aa1a' # The ID of the call
-}
-
-response = p.get_cdr(params)
-print response
+begin
+	response = api.calls.get(
+		'93c513fe-b03a-11e4-990a-251344c8aa1a' # The ID of the call
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
 =begin
 Sample Output    
-[200, 
+ 
     {
         "api_id"=>"f7a12de2-b03d-11e4-a2d1-22000ac5040c", 
         "bill_duration"=>18, 
@@ -33,6 +33,4 @@ Sample Output
         "total_amount"=>"0.00850", 
         "total_rate"=>"0.00850"
     }
-]
-    
 =end

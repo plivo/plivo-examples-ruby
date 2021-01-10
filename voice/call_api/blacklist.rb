@@ -4,24 +4,23 @@ require 'plivo'
 include Plivo
 
 get '/reject_caller/' do
-    people = ['1111111111','2222222222','3333333333']
+    blacklist = ['14156667777', '14156667778', '14156667779']
 
-    from_number = params[:From] 
+    from_number = params[:From]
     r = Response.new()
 
-    if people.include? from_number
+    if blacklist.include? from_number
+        # Specify the reason for hangup
         params = {
-            'reason' =>'rejected'
+            reason: 'rejected'
         }
         r.addHangup(params)
     else
-        r.addSpeak('Hello, from Plivo')
-    end
-    
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
-
+        r.addSpeak('Hello from plivo')
+    end  
+    xml = Plivo::PlivoXML.new(r)
+    render xml: xml.to_xml
+ end
 end
 
 =begin

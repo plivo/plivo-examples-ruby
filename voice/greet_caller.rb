@@ -4,27 +4,26 @@ require 'plivo'
 include Plivo
 
 get '/greet_caller/' do
+	content_type 'text/xml'
 
-    people = {
-        '1111111111' => 'ACDEF',
-        '2222222222' => 'WVXYZ',
-        '3333333333' => 'QWERTY'
-    }
+	people = {
+		'1111111111' => 'ACDEF',
+		'2222222222' => 'WVXYZ',
+		'3333333333' => 'QWERTY'
+	}
 
-    from_number = params[:From] 
-    r = Response.new()
+	from_number = params[:From] 
+	response = Response.new
 
-    if people.include? from_number
-        body = "Hello " + people[from_number]
-    else
-        body = 'Hello Stranger!' 
-    end
+	if people.include? from_number
+		body = "Hello " + people[from_number]
+	else
+		body = 'Hello Stranger!' 
+	end
 
-    r.addSpeak(body)
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
-
+	response.addSpeak(body)
+	xml = PlivoXML.new(response)
+	return xml.to_xml
 end
 
 =begin

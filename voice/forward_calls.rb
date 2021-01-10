@@ -4,28 +4,31 @@ require 'plivo'
 include Plivo
 
 get '/forward' do
-    r = Response.new()
-    # Generate a Dial XML to forward an incoming call.
+	content_type 'text/xml'
 
-    # The phone number of the person calling your Plivo number,
-    # we'll use this as the Caller ID when we forward the call.
+	# Generate a Dial XML to forward an incoming call.
 
-    from_number = params[:From]
+	# The phone number of the person calling your Plivo number,
+	# we'll use this as the Caller ID when we forward the call.
 
-    # The number you would like to forward the call to.
+	from_number = params[:From]
 
-    forwarding_number = "2222222222"
+	# The number you would like to forward the call to.
 
-    params = {
-        'callerId' => from_number # The phone number to be used as the caller id. It can be set to the from_number or any custom number.
-    }
-
-    d = r.addDial(params)
-    d.addNumber(forwarding_number)
-
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
+	forwarding_number = "2222222222"
+		begin
+		response = Response.new
+				params = {
+			'callerId' => from_number # The phone number to be used as the caller id. It can be set to the from_number or any custom number.
+		}
+				dial = response.addDial(params)
+		first_number = "2222222222"
+		dial.addNumber(first_number)
+				xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
 
 =begin

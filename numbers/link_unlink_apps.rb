@@ -1,44 +1,45 @@
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
-
-
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
 # Link an application to a number
-params = {
-        'number' => '12143010249', # Number that has to be linked to an application
-        'app_id' => '16632742496743552' # Application ID that has to be linked
-}
+begin
+	response = api.numbers.update(
+		'15671234567', # Number that has to be linked to an application
+		app_id: '77506472664956327' # Application ID that has to be linked
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-#response = p.link_application_number(params)
-#print response
-
-'''
+=begin
 Sample Output
-[202, {
+{
         "api_id"=>"d509f0b2-b686-11e4-af95-22000ac54c79", 
         "message"=>"changed"
-    }
-]
-'''
+}
+=end
 
 # Unlink an application from an number
-params = {
-        'number' => '12143010249' # Number that has to be unlikned to an application
-}
+begin
+	response = api.numbers.update(
+		'13308702395', # Number that has to be unlikned to an application
+		app_id: ''
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-response = p.unlink_application_number(params)
-print response
-
-'''
+=begin
 Sample Output
-[202, {
+{
         "api_id"=>"e5456f42-b686-11e4-af95-22000ac54c79", 
         "message"=>"changed"
-    }
-]
-'''
+}
+=end

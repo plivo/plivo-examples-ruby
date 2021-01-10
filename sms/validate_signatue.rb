@@ -4,58 +4,19 @@ require 'plivo'
 include Plivo
 require 'uri'
 
-auth_token = "Your_Auth_Token"
+get '/receive_sms/' do
+    auth_token = "Your_Auth_Token"
+    signature = request.env["HTTP_X_PLIVO_SIGNATURE_V2"]
+    nonce = request.env["HTTP_X_PLIVO_SIGNATURE_V2_NONCE"]
+    url = request.url
+    uri = (url.split("?"))[0]
+    
+    output = Plivo::Utils.valid_signature?(uri,nonce,signature,auth_token)
+    puts output
 
-get '/message/' do
-    signature = request.env["HTTP_X_PLIVO_SIGNATURE"]
-    uri = (request.url.split("?"))[0]
-    params = Hash.new{[]}
+    from_number = params[:From]# The phone number of the person who sent the SMS
+    to_number = params[:To]# Your Plivo number that will receive the SMS
+    text = params[:Text]# The text which was received on your Plivo number
 
-    parse_uri = URI(request.url)
-    query_params = parse_uri.query
-    if query_params
-        params = params.merge(Hash[*URI.decode_www_form(query_params).flatten])
-    end
-
-    message_signature = XPlivoSignature.new(signature,uri,params,auth_token)
-    puts "Valid Signature: #{message_signature.is_valid?()}"
-
-    # The phone number of the person who sent the SMS
-    from_number = params["From"]
-
-    # Your Plivo number that will receive the SMS
-    to_number = params["To"]
-
-    # The text which was received on your Plivo number
-    text = params["Text"]
-
-    # Output the text which was received, you could also store the text in a database.
-    puts "Message received - from: #{from_number}, to: #{to_number}, text: #{text}"
-end
-
-post '/message/' do
-    signature = request.env["HTTP_X_PLIVO_SIGNATURE"]
-    uri = request.url
-    params = Hash.new{[]}
-
-    post_params = request.body.read
-    puts post_params
-    if post_params
-        params = params.merge(Hash[*URI.decode_www_form(post_params).flatten])
-    end
-
-    message_signature = XPlivoSignature.new(signature,uri,params,auth_token)
-    puts "Valid Signature: #{message_signature.is_valid?()}"
-
-    # The phone number of the person who sent the SMS
-    from_number = params["From"]
-
-    # Your Plivo number that will receive the SMS
-    to_number = params["To"]
-
-    # The text which was received on your Plivo number
-    text = params["Text"]
-
-    # Output the text which was received, you could also store the text in a database.
-    puts "Message received - from: #{from_number}, to: #{to_number}, text: #{text}"
+    puts "Message received from #{from_number} : #{ text }"
 end
