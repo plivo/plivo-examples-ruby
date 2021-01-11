@@ -1,16 +1,23 @@
-require 'rubygems'
 require 'sinatra'
 require 'plivo'
-include Plivo
+require 'rubygems'
 
-get '/play' do
-    r = Response.new()
-    r.addPlay("https://s3.amazonaws.com/plivocloud/Trumpet.mp3")
+include Plivo::XML
+include Plivo::Exceptions
 
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
+get '/play_recorded' do
+	content_type 'text/xml'
+	begin
+		response = Response.new
+				play_body = 'https://s3.amazonaws.com/plivocloud/Trumpet.mp3'
+		response.addPlay(play_body)
+				xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
+
 
 =begin
 Sample Play XML

@@ -1,28 +1,31 @@
-require 'rubygems'
 require 'sinatra'
 require 'plivo'
-include Plivo
+require 'rubygems'
+
+include Plivo::XML
+include Plivo::Exceptions
 
 # Generate a Record XML and ask the caller to leave a message
 get '/voicemail' do
-
-    r = Response.new()
-
-    # The recorded file will be sent to the 'action' URL
-    params = {
-        'action' => "https://enigmatic-cove-3140.herokuapp.com/record_action", # Submit the result of the record to this URL
-        'method' => 'GET', # HTTP method to submit the action URL
-        'maxLength' => '30', # Maximum number of seconds to record
-        'transcriptionType' => 'auto', # The type of transcription required
-        'transcriptionUrl' => 'https://enigmatic-cove-3140.herokuapp.com/transcription', # The URL where the transcription while be sent from Plivo
-        'transcriptionMethod' => 'GET' # The method used to invoke transcriptionUrl 
-    }
-    r.addSpeak("Leave your message after the tone")
-    r.addRecord(params)
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
-
+	content_type 'text/xml'
+	begin
+		response = Response.new
+		first_speak_body = 'Leave your message after the tone.'
+		response.addSpeak(first_speak_body)
+		params = {
+			action: 'https://www.foo.com/record_action/', # Submit the result of the record to this URL
+			method: 'GET', # HTTP method to submit the action URL
+			maxLength:'30', # Maximum number of seconds to record
+			transcriptionType:'auto', # The type of transcription required
+			transcriptionUrl:'https://www.foo.com/transcription/', # The URL where the transcription while be sent from Plivo
+			transcriptionMethod:'GET' # The method used to invoke transcriptionUrl 
+		}
+		response.addRecord(params)
+		xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
 
 # Action URL Example

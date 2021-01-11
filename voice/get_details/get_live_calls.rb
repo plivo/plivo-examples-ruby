@@ -1,20 +1,17 @@
-# encoding: utf-8
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-params = {
-    'status'=> "live" # The status of the call
-}
-
-# Get all live calls
-response = p.get_live_calls(params)
-print response
+begin
+  response = api.calls.list_live()
+  puts response
+rescue PlivoRESTError => e
+  puts 'Exception: ' + e.message
+end
 
 =begin
 Sample Output    
@@ -28,7 +25,7 @@ Sample Output
 
 # Looping through the call uuids
 
-for uuid in response[1]['calls']
+for uuid in response.calls
     print uuid
 end
 

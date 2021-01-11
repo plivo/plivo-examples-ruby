@@ -1,19 +1,23 @@
-# encoding: utf-8
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-response = p.get_cdrs()
-#print response
+begin
+	response = api.calls.list(
+		limit: 5,
+		offset: 0
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
 =begin
 Sample Output
-[200, 
     {
         "api_id"=>"b3181b50-b03c-11e4-b423-22000ac8a2f8", 
         "meta"=>{
@@ -52,26 +56,26 @@ Sample Output
             }
         ]
     }
-]       
 =end
 
 # Filtering the records
 
-params = {
-    'end_time__gt' => "2015-01-29 11:47", # Filter out calls according to the time of completion. gte stands for greater than or equal.
-    'call_direction' => "outbound", # Filter the results by call direction. The valid inputs are inbound and outbound
-    'from_number' => "1111111111", # Filter the results by the number from where the call originated
-    'to_number' => "2222222222", # Filter the results by the number to which the call was made
-    'limit' => '2', # The number of results per page
-    'offset' => '0' # The number of value items by which the results should be offset
-}
-
-response = p.get_cdrs(params)
-print response
+begin
+	response = api.calls.list(
+		limit: 2, # The number of results per page
+		offset: 0, # The number of value items by which the results should be offset
+		to_number:'2222222222', # Filter the results by the number to which the call was made
+		from_number:'1111111111', # Filter the results by the number from where the call originated
+		call_direction:'outbound' # Filter the results by call direction. The valid inputs are inbound and outbound
+	)
+	puts response
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
 =begin
 Sample Output
-[200, {
+{
         "api_id"=>"34b5e87c-b03d-11e4-b423-22000ac8a2f8", 
         "meta"=>{
             "limit"=>2, 
@@ -109,12 +113,4 @@ Sample Output
             }
         ]
     }
-]
-    
 =end
-
-
-
-
-
-

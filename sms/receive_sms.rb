@@ -1,24 +1,15 @@
-require 'sinatra'
-require 'plivo'
-include Plivo
+require "sinatra"
 
-post '/message/' do
-
-	# The phone number of the person who sent the SMS
-	from_number = params[:From]
-
-	# Your Plivo number that will receive the SMS
-	to_number = params[:To]
-
-	# The text which was received on your Plivo number
-	text = params[:Text]
-
-	# Output the text which was received, you could
-	# also store the text in a database.
-	puts "Message received from #{from_number} : #{ text }"
-
-	"Message received"
+post "/receive_sms/" do
+  # Sender's phone number
+  from_number = params[:From]
+  # Receiver's phone number - Plivo number
+  to_number = params[:To]
+  # The text which was received
+  text = params[:Text]
+  # Print the message
+  puts "Message received - From: #{from_number}, To: #{to_number}, Text: #{text}"
 end
 
 # Sample successful output
-# Text received: Hello, from Plivo - From: 2222222222
+# Message received -  From: 111111111, To: 22222222222, Text: Hello, from Plivo.

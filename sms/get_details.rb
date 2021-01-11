@@ -1,48 +1,39 @@
-# encoding: utf-8
-require 'rubygems'
-require 'plivo'
+require "rubygems"
+require "plivo"
+
 include Plivo
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
-    
-
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-params = {
-    'record_id' => '0936ec98-7c4c-11e4-9bd8-22000afa12b9' # Message UUID for which the details have to be retrieved
-}
-
-response = p.get_message(params)
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
+response = api.messages.get("0936ec98-7c4c-11e4-9bd8-22000afa12b9") # Message UUID for which the details have to be retrieved
 
 # Prints the number of SMS units
-print "Your SMS was split into %s units" % response[1]['units']
+puts "Your SMS was split into %s units" % response.units
 
 # Sample successful output
 # Your SMS was split into 4 units
 
 # Prints the status of the message
-print response[1]['message_state']
+puts response.message_state
 
 # Sample successful output
 # delivered
 
 # Prints the details of all messages
-print response
+puts response
 
 # Sample Output
-# [200, {
-#        "api_id"=>"e27b395c-a0a8-11e4-b423-22000ac8a2f8", 
-#        "from_number"=>"1111111111", 
-#        "message_direction"=>"outbound", 
-#        "message_state"=>"delivered", 
-#        "message_time"=>"2014-12-05 10:57:54+04:00", 
-#        "message_type"=>"sms", 
-#        "message_uuid"=>"0936ec98-7c4c-11e4-9bd8-22000afa12b9", 
-#        "resource_uri"=>"/v1/Account/XXXXXXXXXXXXXXX/Message/0936ec98-7c4c-11e4-9bd8-22000afa12b9/", 
-#        "to_number"=>"2222222222", 
-#        "total_amount"=>"0.02600", 
-#        "total_rate"=>"0.00650", 
-#        "units"=>4
-#    }
-# ]
+# {
+#     "api_id"=> "035eeada-6df1-11e6-b608-06a72a185e87",
+#     "error_code"=> "200",
+#     "from_number"=> "18552828641",
+#     "message_direction"=> "outbound",
+#     "message_state"=> "failed",
+#     "message_time"=> "2016-08-17 21:22:36+05:30",
+#     "message_type"=> "sms",
+#     "message_uuid"=> "2a340179-e8a9-4b1d-ae2c-9f346e7b6d7d",
+#     "resource_uri"=> "/v1/Account/{auth_id}/Message/2a340179-e8a9-4b1d-ae2c-9f346e7b6d7d/",
+#     "to_number"=> "19352326448",
+#     "total_amount"=> "0.00000",
+#     "total_rate"=> "0.00350",
+#     "units"=> 1
+# }

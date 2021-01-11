@@ -1,45 +1,24 @@
-# encoding: utf-8
-require 'rubygems'
-require 'plivo'
+require "plivo"
 include Plivo
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
-
-
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
+api = RestClient.new("auth_id", "auth_token")
 
 # Send SMS
-params = {
-	'src' => 'ALPHA-ID', # Sender's Alphanumeric sender ID
-	'dst' => '1111111111', # Receiver's phone Number with country code
-	'text' => 'Hi, from Plivo' # Your SMS Text Message - English
-	}
-
-response = p.send_message(params)
-print response
+response = api.messages.create(
+	'ALPHA-ID', # Sender's Alphanumeric sender ID
+	["+14151112222"], # Receiver's phone Number with country code
+	"Hello, this is a sample text", # Your SMS Text Message - English
+	# "こんにちは、元気ですか？" # Your SMS Text Message - Japanese
+	# "Ce est texte généré aléatoirement" # Your SMS Text Message - French
+	{ 	url: "http://foo.com/sms_status/", # The URL to which with the status of the message is sent
+		method: 'POST' # The method used to call the url
+	},
+  )
+  puts response
 
 # Sample Output
-# [202, {
-#		"api_id"=>"45305dca-9f9b-11e4-ac1f-22000ac51de6", 
-#		"message"=>"message(s) queued", 
-#		"message_uuid"=>["454982a0-9f9b-11e4-9bd8-22000afa12b9"]
-#	}
-# ]
-
-# Prints only the status code
-print response[0]
-
-# Sample successful output
-# 202
-
-# Prints the message details
-print response[1]
-
-# Sample successful output
 # {
-#       "api_id"=>"45305dca-9f9b-11e4-ac1f-22000ac51de6", 
-#       "message"=>"message(s) queued", 
-#       "message_uuid"=>["454982a0-9f9b-11e4-9bd8-22000afa12b9"]
-#   }
+# 	"api_id"=>"948dc17e-529a-11eb-a4f5-0242ac110006", 
+# 	"message"=>"message(s) queued", 
+# 	"message_uuid"=>["948effc6-529a-11eb-a4f5-0242ac110006"], 
+# }

@@ -37,24 +37,21 @@ get '/transfer_action' do
     call_uuid = params[:CallUUID]
     print "Digit pressed #{digit}"
     print "Call UUID #{call_uuid}"
+    
+    api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
-    AUTH_ID = "Your AUTH_ID"
-    AUTH_TOKEN = "Your AUTH_TOKEN"
-
-    p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
-
-    if (digit == "1")
-        params = {
-            'call_uuid' => call_uuid, # ID of the call
-            'aleg_url' => "https://enigmatic-cove-3140.herokuapp.com/connect", # URL to transfer for aleg
-            'aleg_method' => "GET" # ethod to invoke the aleg_url
-        }
-        response = p.transfer_call(params)
-        print response
-    else
-        print "Wrong Input"
-    end
+begin
+  response = api.calls.update(
+    'eba53b9e-8fbd-45c1-9444-696d2172fbc8', # ID of the call
+    legs: 'aleg', # leg to be transferred
+    aleg_url: 'http://aleg.url' # URL to transfer for aleg
+    aleg_method: 'GET' # method to invoke the aleg_url
+  )
+  return response
+rescue PlivoRESTError => e
+  puts 'Exception: ' + e.message
 end
+
 
 =begin
 Sample XML
@@ -70,13 +67,11 @@ Digit pressed 1
 Call UUID 1d970618-b055-11e4-9f23-2b70f7e6a9a7
 
 Transfer API Outpt
-[202, 
-    {
-        "api_id"=>"224060b0-b055-11e4-ac1f-22000ac51de6", 
-        "call_uuids"=>["1d970618-b055-11e4-9f23-2b70f7e6a9a7"], 
-        "message"=>"transfer executed"
-    }
-]
+{
+    "api_id"=>"224060b0-b055-11e4-ac1f-22000ac51de6", 
+    "call_uuids"=>["1d970618-b055-11e4-9f23-2b70f7e6a9a7"], 
+    "message"=>"transfer executed"
+}
 
 Sample Connect XML
 <Response>

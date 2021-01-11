@@ -1,15 +1,21 @@
-require 'rubygems'
 require 'sinatra'
 require 'plivo'
-include Plivo
+require 'rubygems'
 
-get '/speak' do
-    r = Response.new()
-    r.addSpeak("Hello, Welcome to Plivo")
+include Plivo::XML
+include Plivo::Exceptions
 
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
+get '/receive_calls' do
+	content_type 'text/xml'
+	begin
+		response = Response.new
+				speak_body = 'Hello, Welcome to Plivo.'
+		response.addSpeak(speak_body)
+				xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
 
 =begin

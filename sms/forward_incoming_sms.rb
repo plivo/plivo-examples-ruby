@@ -1,50 +1,44 @@
-require 'sinatra'
-require 'plivo'
+require "plivo"
+require "sinatra"
+
 include Plivo
+include Plivo::XML
 
-post '/message/' do
-
-	# The phone number of the person who sent the SMS
+post "/forward_sms/" do
+	# Sender's phone number
 	from_number = params[:From]
-
-	# Your Plivo number that will receive the SMS
+	# Receiver's phone number - Plivo number
 	to_number = params[:To]
-
-	# The text which was received on your Plivo number
+	# The text which was received
 	text = params[:Text]
 
-	# Output the text which was received, you could
-	# also store the text in a database.
-	puts "Message received from #{from_number} : #{text}"
-
-	r = Response.new()
+	# Print the message
+	puts "Message received - From: #{from_number}, To: #{to_number}, Text: #{text}"
 
 	body = "Forwarded message : #{text}"
-    The phone number to which the SMS has to be forwarded
-	to_forward = '3333333333'
+	to_forward = "+14152223333"
+	# send the details to generate an XML
+	response = Response.new
+	params = {
+		src: to_number,  # Sender's phone number
+		dst: to_forward, # Receiver's phone Number
+		type: "sms",
+		callbackUrl: "https://www.foo.com/sms_status",
+		callbackMethod: "POST",
+	}
 
-    params = {
-    'src' => to_number, # Sender's phone number
-    'dst' => to_forward, # Receiver's phone Number
-    'callbackUrl' => 'https://enigmatic-cove-3140.herokuapp.com/report/', # URL that is notified by Plivo when a response is available and to which the response is sent
-    'callbackMethod' => 'POST' # The method used to notify the callbackUrl
-    }
-	
-    # Message added
-	r.addMessage(body,params)
+	message_body = body
+	response.addMessage(message_body, params)
+	xml = PlivoXML.new(response)
 
-    # Print the XML
-	puts r.to_xml()
-
-    # Return the XML
-	content_type 'text/xml'
-	return r.to_s()
+	puts xml.to_xml() # Prints the XML
+	content_type "application/xml"
+	return xml.to_s() # Returns the XML
 end
 
-
 # Sample Output
-# Message received from 2222222222 : Hello
+# Message received - From: 111111111, To: 222222222, Text: Hello
 # <?xml version="1.0" encoding="utf-8" ?>
 # <Response>
-#	<Message callbackMethod='GET' callbackUrl='https://enigmatic-cove-3140.herokuapp.com/report/' dst='333333333' src='1111111111'>Forwarded message : Hello</Message>
+#	<Message callbackMethod='POST' callbackUrl='https://www.foo.com/sms_status' dst='14152223333' src='1111111111'>Forwarded message : Hello</Message>
 # </Response>

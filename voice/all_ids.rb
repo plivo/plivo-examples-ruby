@@ -1,28 +1,27 @@
-# encoding: utf-8
 require 'rubygems'
 require 'plivo'
+
 include Plivo
+include Plivo::Exceptions
 
-AUTH_ID = "Your AUTH_ID"
-AUTH_TOKEN = "Your AUTH_TOKEN"
-
-p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
+api = RestClient.new("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN")
 
 # API ID is returned for every API request. 
 # Request UUID is request id of the call. This ID is returned as soon as the call is fired irrespective of whether the call is answered or not
 
-params = {
-    'to' => '9199663489033', # The phone numer to which the all has to be placed
-    'from' => '2222222222', # The phone number to be used as the caller id
-    'answer_url' => "https://enigmatic-cove-3140.herokuapp.com/speak", # The URL invoked by Plivo when the outbound call is answered
-    'answer_method' => "GET" # Method used to invoke the answer_url
-}
+begin
+	response = api.calls.create(
+		'+14151234567', # Caller ID
+		['+15671234567'], # Destination number
+		'http://s3.amazonaws.com/static.plivo.com/answer.xml' # URL which will return the XML
+	)
+	puts "API ID : #{response.api_id}"
+	puts "Request ID : #{response.request_uuid}"
 
-# Make an outbound call
-response = p.make_call(params)
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
+end
 
-print "API ID : #{(response[1]['api_id'])}"
-print "Request ID : #{(response[1]['request_uuid'])}"
 
 # Sample successful output
 # API ID : a14d2070-9505-11e4-b932-22000ac50fac
@@ -30,14 +29,15 @@ print "Request ID : #{(response[1]['request_uuid'])}"
 
 # Call UUID is the id of a live call. This ID is returned only after the call is answered.
 
-params = {
-    'status' => "live" # The status of the call
-}
-
-# Get the details of all live calls
-response = p.get_live_calls(params)
-for uuid in response[1]['calls']
-    print "Call UUID : #{uuid} "
+begin
+	response = api.calls.get_live(
+		'eba53b9e-8fbd-45c1-9444-696d2172fbc8' # ID of the call
+	)
+	for uuid in response.calls
+	print "Call UUID : #{uuid} "
+    end
+rescue PlivoRESTError => e
+	puts 'Exception: ' + e.message
 end
 
 # Sample successful output

@@ -4,13 +4,18 @@ require 'plivo'
 include Plivo
 
 get '/dtmf' do
-    r = Response.new()
-    r.addSpeak("Sending Digits")
-    r.addDTMF("12345")
-
-    puts r.to_xml()
-    content_type 'text/xml'
-    return r.to_s()
+	content_type 'text/xml'
+	begin
+		response = Response.new
+		speak_body = 'Sending Digits'
+		response.addSpeak(speak_body, params)
+		dtmf = "12345"
+		response.addDTMF(dtmf)
+		xml = PlivoXML.new(response)
+		return xml.to_xml
+	rescue PlivoXMLError => e
+		puts 'Exception: ' + e.message
+	end
 end
 
 =begin
